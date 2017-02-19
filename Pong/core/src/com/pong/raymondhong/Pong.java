@@ -8,14 +8,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 public class Pong extends ApplicationAdapter {
-	private float speed;
+	private float playerSpeed;
+	private float enemySpeed;
 	private Music bgm;
 	private Stage stage;
 
@@ -34,10 +35,10 @@ public class Pong extends ApplicationAdapter {
 		@Override
 		public void act(float delta) {
 			if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-				sprite.translateX(-1.0f * speed);
+				sprite.translateX(-1.0f * playerSpeed);
 			}
 			else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-				sprite.translateX(speed);
+				sprite.translateX(playerSpeed);
 			}
 		}
 	}
@@ -46,24 +47,63 @@ public class Pong extends ApplicationAdapter {
 		Sprite sprite = new Sprite(new Texture("pongboard.jpg"));
 
 		public Enemy() {
-			sprite.setPosition(Gdx.graphics.getWidth() / 2  - sprite.getWidth() / 2, Gdx.graphics.getHeight() - sprite.getHeight());
+			setPosition(Gdx.graphics.getWidth() / 2  - sprite.getWidth() / 2, Gdx.graphics.getHeight() - sprite.getHeight());
+			sprite.setPosition(getX(), getY());
 		}
 
 		@Override
 		public void draw(Batch batch, float alpha) {
 			sprite.draw(batch);
 		}
+
+		@Override
+		public void act(float delta) {
+			super.act(delta);
+			sprite.setPosition(getX(), getY());
+		}
+
+		@Override
+		public float getWidth() {
+			return sprite.getWidth();
+		}
+
+		@Override
+		public float getHeight() {
+			return sprite.getHeight();
+		}
+
 	}
 
 	@Override
 	public void create () {
+		playerSpeed = 5.0f;
+		enemySpeed = 5.0f;
+
 		Player player = new Player();
 		Enemy enemy = new Enemy();
+
+		MoveToAction enemyMovementRight = new MoveToAction();
+		enemyMovementRight.setPosition(Gdx.graphics.getWidth() - enemy.getWidth(), Gdx.graphics.getHeight() - enemy.getHeight());
+		enemyMovementRight.setDuration(enemySpeed);
+
+		MoveToAction enemyMovementLeft = new MoveToAction();
+		enemyMovementLeft.setPosition(0, Gdx.graphics.getHeight() - enemy.getHeight());
+		enemyMovementLeft.setDuration(enemySpeed);
+
+		SequenceAction enemyMovementSequence = new SequenceAction();
+		enemyMovementSequence.addAction(enemyMovementRight);
+		enemyMovementSequence.addAction(enemyMovementLeft);
+
+		RepeatAction enemyMovementRepeat = new RepeatAction();
+		enemyMovementRepeat.setAction(enemyMovementSequence);
+		enemyMovementRepeat.setCount(RepeatAction.FOREVER);
+
+		enemy.addAction(enemyMovementRepeat);
+
 		stage = new Stage();
 		stage.addActor(player);
 		stage.addActor(enemy);
 
-		speed = 5.0f;
 
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
 		bgm.play();
