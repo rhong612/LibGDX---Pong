@@ -8,6 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -19,6 +27,11 @@ public class Pong extends ApplicationAdapter {
 	private float enemySpeed;
 	private Music bgm;
 	private Stage stage;
+
+	private SpriteBatch spriteBatch;
+	private Sprite ballSprite;
+	private World world;
+	private Body ballBody;
 
 	public class Player extends Actor {
 		Sprite sprite = new Sprite(new Texture("pongboard.jpg"));
@@ -104,15 +117,34 @@ public class Pong extends ApplicationAdapter {
 		stage.addActor(player);
 		stage.addActor(enemy);
 
-
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
 		bgm.play();
+
+
+		ballSprite = new Sprite(new Texture("pongball.jpg"));
+		ballSprite.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+
+
+		world = new World(new Vector2(0, -98f), true);
+		BodyDef pongBallDef = new BodyDef();
+		pongBallDef.type = BodyDef.BodyType.DynamicBody;
+		pongBallDef.position.set(ballSprite.getX(), ballSprite.getY());
+		ballBody = world.createBody(pongBallDef);
+
+		spriteBatch = new SpriteBatch();
 	}
 
 	@Override
 	public void render () {
+		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+		ballSprite.setPosition(ballBody.getPosition().x, ballBody.getPosition().y);
+
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		spriteBatch.begin();
+		ballSprite.draw(spriteBatch);
+		spriteBatch.end();
 
 		stage.act();
 		stage.draw();
