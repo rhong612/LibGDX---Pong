@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -22,7 +24,7 @@ public class PongBall extends Actor {
     public PongBall() {
         ballSprite = new Sprite(new Texture("pongball.jpg"));
         ballSprite.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        setPosition(ballSprite.getX(), ballSprite.getY());
     }
 
     @Override
@@ -53,5 +55,12 @@ public class PongBall extends Actor {
      */
     public void attachBody(Body body) {
         ballBody = body;
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(ballSprite.getWidth(), ballSprite.getHeight());
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
+        fixture.density = 0.1f;
+        ballBody.createFixture(fixture);
+        shape.dispose();
     }
 }

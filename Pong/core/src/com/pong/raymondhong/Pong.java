@@ -5,13 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -27,6 +30,10 @@ public class Pong extends ApplicationAdapter {
 	private Stage stage;
 	private World world;
 
+	//DEBUG TOOLS
+	private Box2DDebugRenderer debugger;
+	private OrthographicCamera debugCam;
+
 	@Override
 	public void create () {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
@@ -41,26 +48,39 @@ public class Pong extends ApplicationAdapter {
 		stage.addActor(enemy);
 		stage.addActor(ball);
 
-		//Add gravity and create pong ball body
+		//Add gravity
 		world = new World(new Vector2(0, -98f), true);
+
+		//Create ping pong body
 		BodyDef pongBallDef = new BodyDef();
 		pongBallDef.type = BodyDef.BodyType.DynamicBody;
 		pongBallDef.position.set(ball.getX(), ball.getY());
-
-		//Attach the body to the ball actor
 		ball.attachBody(world.createBody(pongBallDef));
 
+		//Create player body
+		BodyDef playerBoardDef = new BodyDef();
+		playerBoardDef.type = BodyDef.BodyType.StaticBody;
+		playerBoardDef.position.set(player.getX(), player.getY());
+		player.attachBody(world.createBody(playerBoardDef));
+
+		//Setup debugging tools
+		debugger = new Box2DDebugRenderer();
+		debugCam = new OrthographicCamera( Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
 	}
 
 	@Override
 	public void render () {
-		world.step(Gdx.graphics.getDeltaTime(), 6, 2); //Run physics simulation
+		world.step(1f/60f, 6, 2); //Run physics simulation at a rate of 60Hz
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act();
 		stage.draw();
+
+		//Update debugging tools
+		debugCam.update();
+		debugger.render( world, debugCam.combined);
 	}
 	
 	@Override
