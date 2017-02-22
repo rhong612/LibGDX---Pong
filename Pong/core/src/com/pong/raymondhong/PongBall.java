@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -21,6 +22,14 @@ public class PongBall extends Entity {
     public PongBall(World world) {
         super(new Sprite(new Texture("pongball.jpg")));
         initializeBody(world);
+
+        //Give the ball an initial force to get it moving
+        if (Math.random() > 0.5) {
+            body.applyForceToCenter(new Vector2(0f, -1.0f * ballSpeed), true);
+        }
+        else {
+            body.applyForceToCenter(new Vector2(0f, ballSpeed), true);
+        }
     }
 
     @Override
@@ -53,6 +62,7 @@ public class PongBall extends Entity {
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;
+        fixture.restitution = 1f;
         body.createFixture(fixture);
         shape.dispose();
     }

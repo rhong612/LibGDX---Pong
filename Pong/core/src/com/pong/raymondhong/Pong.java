@@ -27,7 +27,7 @@ public class Pong extends ApplicationAdapter {
 		bgm.play();
 
 		//Create the world and add gravity
-		world = new World(new Vector2(0, -98f), true);
+		world = new World(new Vector2(0, 0), true);
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
