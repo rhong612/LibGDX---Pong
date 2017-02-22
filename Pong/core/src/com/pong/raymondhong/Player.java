@@ -36,19 +36,17 @@ public class Player extends Actor {
     public void act(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             sprite.translateX(-1.0f * playerSpeed);
-            //body.setLinearVelocity(-1.0f * playerSpeed, 0);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             sprite.translateX(playerSpeed);
-            //body.setLinearVelocity(1.0f * playerSpeed, 0);
         }
-        //sprite.setPosition(body.getPosition().x, body.getPosition().y);
+        body.setTransform(sprite.getX(), sprite.getY(), body.getAngle());
     }
 
     public void attachBody(Body body) {
         this.body = body;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth(), sprite.getHeight());
+        shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight() / 2);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;

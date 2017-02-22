@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -55,8 +56,8 @@ public class PongBall extends Actor {
      */
     public void attachBody(Body body) {
         ballBody = body;
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(ballSprite.getWidth(), ballSprite.getHeight());
+        CircleShape shape = new CircleShape();
+        shape.setRadius(ballSprite.getWidth() / 2);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;
