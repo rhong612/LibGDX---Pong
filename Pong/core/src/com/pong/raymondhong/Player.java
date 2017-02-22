@@ -24,7 +24,7 @@ public class Player extends Actor {
     public Player() {
         sprite = new Sprite(new Texture("pongboard.jpg"));
         sprite.setPosition(Gdx.graphics.getWidth() / 2  - sprite.getWidth() / 2, 0);
-        setPosition(sprite.getX(), sprite.getY());
+        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Player extends Actor {
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             sprite.translateX(playerSpeed);
         }
-        body.setTransform(sprite.getX(), sprite.getY(), body.getAngle());
+        body.setTransform(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2, body.getAngle());
     }
 
     public void attachBody(Body body) {

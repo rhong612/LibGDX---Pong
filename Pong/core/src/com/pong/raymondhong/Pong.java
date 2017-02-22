@@ -30,6 +30,8 @@ public class Pong extends ApplicationAdapter {
 	private Stage stage;
 	private World world;
 
+	public static final float PIXELS_TO_METERS = 100f; //Every 100 pixels = 1 meter in game
+
 	//DEBUG TOOLS
 	private Box2DDebugRenderer debugger;
 	private OrthographicCamera debugCam;
@@ -54,13 +56,13 @@ public class Pong extends ApplicationAdapter {
 		//Create ping pong body
 		BodyDef pongBallDef = new BodyDef();
 		pongBallDef.type = BodyDef.BodyType.DynamicBody;
-		pongBallDef.position.set(ball.getX(), ball.getY());
+		pongBallDef.position.set(ball.getX() + ball.getWidth() / 2, ball.getY() + ball.getHeight() / 2);
 		ball.attachBody(world.createBody(pongBallDef));
 
 		//Create player body
 		BodyDef playerBoardDef = new BodyDef();
 		playerBoardDef.type = BodyDef.BodyType.StaticBody;
-		playerBoardDef.position.set(player.getX(), player.getY());
+		playerBoardDef.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2);
 		player.attachBody(world.createBody(playerBoardDef));
 
 		//Setup debugging tools
@@ -78,8 +80,7 @@ public class Pong extends ApplicationAdapter {
 		stage.act();
 		stage.draw();
 
-		//Update debugging tools
-		debugCam.update();
+		//Open debugging view
 		debugger.render( world, debugCam.combined);
 	}
 	

@@ -25,7 +25,7 @@ public class PongBall extends Actor {
     public PongBall() {
         ballSprite = new Sprite(new Texture("pongball.jpg"));
         ballSprite.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        setPosition(ballSprite.getX(), ballSprite.getY());
+        setBounds(ballSprite.getX(), ballSprite.getY(), ballSprite.getWidth(), ballSprite.getHeight());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PongBall extends Actor {
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             ballBody.setLinearVelocity(ballSpeed, 0f);
         }
-        ballSprite.setPosition(ballBody.getPosition().x, ballBody.getPosition().y);
+        ballSprite.setPosition(ballBody.getPosition().x - ballSprite.getWidth() / 2, ballBody.getPosition().y - ballSprite.getHeight() / 2);
     }
 
     /**
