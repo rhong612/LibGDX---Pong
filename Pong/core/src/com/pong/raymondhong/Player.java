@@ -3,17 +3,14 @@ package com.pong.raymondhong;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * An Actor representing the Player Board
+ * An Entity representing the Player Board
  */
 public class Player extends Entity {
     private static final float playerSpeed = 5.0f;
@@ -36,6 +33,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Initializes the body
+     * @param world the world to host the body
+     */
+    @Override
     public void initializeBody(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;

@@ -2,16 +2,14 @@ package com.pong.raymondhong;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 /**
- * An Actor representing the AI Enemy Pong Board
+ * An Entity representing the AI Enemy Pong Board
  */
 public class Enemy extends Entity {
     private static final float enemySpeed = 5.0f;
@@ -21,24 +19,7 @@ public class Enemy extends Entity {
      */
     public Enemy(World world) {
         super(new Sprite(new Texture("pongboard.jpg")));
-
-        MoveToAction enemyMovementRight = new MoveToAction();
-        enemyMovementRight.setPosition(Gdx.graphics.getWidth() - getWidth(), Gdx.graphics.getHeight() - getHeight());
-        enemyMovementRight.setDuration(enemySpeed);
-
-        MoveToAction enemyMovementLeft = new MoveToAction();
-        enemyMovementLeft.setPosition(0, Gdx.graphics.getHeight() - getHeight());
-        enemyMovementLeft.setDuration(enemySpeed);
-
-        SequenceAction enemyMovementSequence = new SequenceAction();
-        enemyMovementSequence.addAction(enemyMovementRight);
-        enemyMovementSequence.addAction(enemyMovementLeft);
-
-        RepeatAction enemyMovementRepeat = new RepeatAction();
-        enemyMovementRepeat.setAction(enemyMovementSequence);
-        enemyMovementRepeat.setCount(RepeatAction.FOREVER);
-
-        this.addAction(enemyMovementRepeat);
+        initializeBody(world);
     }
 
     @Override
@@ -46,8 +27,22 @@ public class Enemy extends Entity {
 
     }
 
+    /**
+     * Initializes the body
+     * @param world the world to host the body
+     */
     @Override
     public void initializeBody(World world) {
-
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, (Gdx.graphics.getHeight() - getHeight() / 2) / Pong.PIXELS_PER_METER);
+        body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = shape;
+        fixture.density = 0.1f;
+        body.createFixture(fixture);
+        shape.dispose();
     }
 }

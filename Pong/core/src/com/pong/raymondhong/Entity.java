@@ -1,17 +1,13 @@
 package com.pong.raymondhong;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Created by Raymond on 2/22/2017.
+ * An Entity in the game world that ensures the Box2D components are always in sync with the Scene components
  */
 public abstract class Entity extends Actor {
     protected Body body;

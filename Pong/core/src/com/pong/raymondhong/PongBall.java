@@ -3,18 +3,14 @@ package com.pong.raymondhong;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * An Actor that represents the Pong Ball
+ * An Entity that represents the Pong Ball
  */
 public class PongBall extends Entity {
     private static final float ballSpeed = 10f;
@@ -44,8 +40,8 @@ public class PongBall extends Entity {
     }
 
     /**
-     * Attaches a body to the ball
-     * @param world the body to be attached
+     * Initializes the body
+     * @param world the world to host the body
      */
     public void initializeBody(World world) {
         BodyDef pongBallDef = new BodyDef();
