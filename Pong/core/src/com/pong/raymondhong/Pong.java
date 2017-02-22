@@ -67,7 +67,8 @@ public class Pong extends ApplicationAdapter {
 
 		//Setup debugging tools
 		debugger = new Box2DDebugRenderer();
-		debugCam = new OrthographicCamera( Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
+		debugCam = new OrthographicCamera();
+		debugCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	@Override
