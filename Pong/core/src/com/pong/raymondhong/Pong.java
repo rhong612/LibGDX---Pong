@@ -30,7 +30,7 @@ public class Pong extends ApplicationAdapter {
 	private Stage stage;
 	private World world;
 
-	public static final float PIXELS_TO_METERS = 100f; //Every 100 pixels = 1 meter in game
+	public static final float PIXELS_PER_METER = 50f; //Every 100 pixels = 1 meter in game
 
 	//DEBUG TOOLS
 	private Box2DDebugRenderer debugger;
@@ -56,19 +56,19 @@ public class Pong extends ApplicationAdapter {
 		//Create ping pong body
 		BodyDef pongBallDef = new BodyDef();
 		pongBallDef.type = BodyDef.BodyType.DynamicBody;
-		pongBallDef.position.set(ball.getX() + ball.getWidth() / 2, ball.getY() + ball.getHeight() / 2);
+		pongBallDef.position.set((ball.getX() + ball.getWidth() / 2) / PIXELS_PER_METER, (ball.getY() + ball.getHeight() / 2) / PIXELS_PER_METER);
 		ball.attachBody(world.createBody(pongBallDef));
 
 		//Create player body
 		BodyDef playerBoardDef = new BodyDef();
-		playerBoardDef.type = BodyDef.BodyType.StaticBody;
-		playerBoardDef.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2);
+		playerBoardDef.type = BodyDef.BodyType.KinematicBody;
+		playerBoardDef.position.set((player.getX() + player.getWidth() / 2) / PIXELS_PER_METER, (player.getY() + player.getHeight() / 2) / PIXELS_PER_METER );
 		player.attachBody(world.createBody(playerBoardDef));
 
 		//Setup debugging tools
 		debugger = new Box2DDebugRenderer();
 		debugCam = new OrthographicCamera();
-		debugCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		debugCam.setToOrtho(false, Gdx.graphics.getWidth() / PIXELS_PER_METER, Gdx.graphics.getHeight() / PIXELS_PER_METER);
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class PongBall extends Actor {
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             ballBody.setLinearVelocity(ballSpeed, 0f);
         }
-        ballSprite.setPosition(ballBody.getPosition().x - ballSprite.getWidth() / 2, ballBody.getPosition().y - ballSprite.getHeight() / 2);
+        ballSprite.setPosition((ballBody.getPosition().x * Pong.PIXELS_PER_METER) - ballSprite.getWidth() / 2, (ballBody.getPosition().y * Pong.PIXELS_PER_METER) - ballSprite.getHeight() / 2);
     }
 
     /**
@@ -57,7 +57,7 @@ public class PongBall extends Actor {
     public void attachBody(Body body) {
         ballBody = body;
         CircleShape shape = new CircleShape();
-        shape.setRadius(ballSprite.getWidth() / 2);
+        shape.setRadius(ballSprite.getWidth() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;
