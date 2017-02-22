@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -12,24 +13,21 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 /**
  * An Actor representing the AI Enemy Pong Board
  */
-public class Enemy extends Actor {
-    private Sprite sprite;
+public class Enemy extends Entity {
     private static final float enemySpeed = 5.0f;
 
     /**
      * Constructs an Enemy PongBoard
      */
-    public Enemy() {
-        sprite = new Sprite(new Texture("pongboard.jpg"));
-        setPosition(Gdx.graphics.getWidth() / 2  - sprite.getWidth() / 2, Gdx.graphics.getHeight() - sprite.getHeight());
-        sprite.setPosition(getX(), getY());
+    public Enemy(World world) {
+        super(new Sprite(new Texture("pongboard.jpg")));
 
         MoveToAction enemyMovementRight = new MoveToAction();
-        enemyMovementRight.setPosition(Gdx.graphics.getWidth() - sprite.getWidth(), Gdx.graphics.getHeight() - sprite.getHeight());
+        enemyMovementRight.setPosition(Gdx.graphics.getWidth() - getWidth(), Gdx.graphics.getHeight() - getHeight());
         enemyMovementRight.setDuration(enemySpeed);
 
         MoveToAction enemyMovementLeft = new MoveToAction();
-        enemyMovementLeft.setPosition(0, Gdx.graphics.getHeight() - sprite.getHeight());
+        enemyMovementLeft.setPosition(0, Gdx.graphics.getHeight() - getHeight());
         enemyMovementLeft.setDuration(enemySpeed);
 
         SequenceAction enemyMovementSequence = new SequenceAction();
@@ -44,14 +42,12 @@ public class Enemy extends Actor {
     }
 
     @Override
-    public void draw(Batch batch, float alpha) {
-        sprite.draw(batch);
+    public void act(float delta) {
+
     }
 
     @Override
-    public void act(float delta) {
-        super.act(delta);
-        sprite.setPosition(getX(), getY());
-    }
+    public void initializeBody(World world) {
 
+    }
 }

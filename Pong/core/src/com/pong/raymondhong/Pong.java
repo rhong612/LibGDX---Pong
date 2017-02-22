@@ -30,7 +30,7 @@ public class Pong extends ApplicationAdapter {
 	private Stage stage;
 	private World world;
 
-	public static final float PIXELS_PER_METER = 50f; //Every 100 pixels = 1 meter in game
+	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
 
 	//DEBUG TOOLS
 	private Box2DDebugRenderer debugger;
@@ -41,29 +41,18 @@ public class Pong extends ApplicationAdapter {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
 		bgm.play();
 
-		//Initialize all actors and add them to the stage
-		Player player = new Player();
-		Enemy enemy = new Enemy();
-		PongBall ball = new PongBall();
-		stage = new Stage();
-		stage.addActor(player);
-		stage.addActor(enemy);
-		stage.addActor(ball);
-
-		//Add gravity
+		//Create the world and add gravity
 		world = new World(new Vector2(0, -98f), true);
 
-		//Create ping pong body
-		BodyDef pongBallDef = new BodyDef();
-		pongBallDef.type = BodyDef.BodyType.DynamicBody;
-		pongBallDef.position.set((ball.getX() + ball.getWidth() / 2) / PIXELS_PER_METER, (ball.getY() + ball.getHeight() / 2) / PIXELS_PER_METER);
-		ball.attachBody(world.createBody(pongBallDef));
+		//Initialize all actors and add them to the stage
+		Player player = new Player(world);
+		Enemy enemy = new Enemy(world);
+		PongBall ball = new PongBall(world);
 
-		//Create player body
-		BodyDef playerBoardDef = new BodyDef();
-		playerBoardDef.type = BodyDef.BodyType.KinematicBody;
-		playerBoardDef.position.set((player.getX() + player.getWidth() / 2) / PIXELS_PER_METER, (player.getY() + player.getHeight() / 2) / PIXELS_PER_METER );
-		player.attachBody(world.createBody(playerBoardDef));
+		stage = new Stage();
+		stage.addActor(player);
+		//stage.addActor(enemy);
+		stage.addActor(ball);
 
 		//Setup debugging tools
 		debugger = new Box2DDebugRenderer();

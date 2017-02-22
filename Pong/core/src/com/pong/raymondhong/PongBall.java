@@ -6,62 +6,58 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * An Actor that represents the Pong Ball
  */
-public class PongBall extends Actor {
-    private Sprite ballSprite;
-    private Body ballBody;
+public class PongBall extends Entity {
     private static final float ballSpeed = 10f;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body
      */
-    public PongBall() {
-        ballSprite = new Sprite(new Texture("pongball.jpg"));
-        ballSprite.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        setBounds(ballSprite.getX(), ballSprite.getY(), ballSprite.getWidth(), ballSprite.getHeight());
-    }
-
-    @Override
-    public void draw(Batch batch, float alpha) {
-        ballSprite.draw(batch);
+    public PongBall(World world) {
+        super(new Sprite(new Texture("pongball.jpg")));
+        initializeBody(world);
     }
 
     @Override
     public void act(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            ballBody.setLinearVelocity(0f, ballSpeed);
+            body.setLinearVelocity(0f, ballSpeed);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            ballBody.setLinearVelocity(-1.0f * ballSpeed, 0f);
+            body.setLinearVelocity(-1.0f * ballSpeed, 0f);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            ballBody.setLinearVelocity(0f, -1.0f * ballSpeed);
+            body.setLinearVelocity(0f, -1.0f * ballSpeed);
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            ballBody.setLinearVelocity(ballSpeed, 0f);
+            body.setLinearVelocity(ballSpeed, 0f);
         }
-        ballSprite.setPosition((ballBody.getPosition().x * Pong.PIXELS_PER_METER) - ballSprite.getWidth() / 2, (ballBody.getPosition().y * Pong.PIXELS_PER_METER) - ballSprite.getHeight() / 2);
     }
 
     /**
      * Attaches a body to the ball
-     * @param body the body to be attached
+     * @param world the body to be attached
      */
-    public void attachBody(Body body) {
-        ballBody = body;
+    public void initializeBody(World world) {
+        BodyDef pongBallDef = new BodyDef();
+        pongBallDef.type = BodyDef.BodyType.DynamicBody;
+        pongBallDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, Gdx.graphics.getHeight() / 2 / Pong.PIXELS_PER_METER);
+        body = world.createBody(pongBallDef);
         CircleShape shape = new CircleShape();
-        shape.setRadius(ballSprite.getWidth() / 2 / Pong.PIXELS_PER_METER);
+        shape.setRadius(getWidth() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;
-        ballBody.createFixture(fixture);
+        body.createFixture(fixture);
         shape.dispose();
     }
 }

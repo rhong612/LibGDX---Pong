@@ -6,30 +6,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * An Actor representing the Player Board
  */
-public class Player extends Actor {
-    private Sprite sprite;
-    private Body body;
+public class Player extends Entity {
     private static final float playerSpeed = 5.0f;
 
     /**
      * Constructs a Player Board
      */
-    public Player() {
-        sprite = new Sprite(new Texture("pongboard.jpg"));
-        sprite.setPosition(Gdx.graphics.getWidth() / 2  - sprite.getWidth() / 2, 0);
-        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
-    }
-
-    @Override
-    public void draw(Batch batch, float alpha) {
-        sprite.draw(batch);
+    public Player(World world) {
+        super(new Sprite(new Texture("pongboard.jpg")));
+        initializeBody(world);
     }
 
     @Override
@@ -40,13 +34,15 @@ public class Player extends Actor {
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             body.setLinearVelocity(playerSpeed, 0);
         }
-        sprite.setPosition((body.getPosition().x * Pong.PIXELS_PER_METER) - sprite.getWidth() / 2, (body.getPosition().y * Pong.PIXELS_PER_METER) - sprite.getHeight() / 2 );
     }
 
-    public void attachBody(Body body) {
-        this.body = body;
+    public void initializeBody(World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
+        body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 2 / Pong.PIXELS_PER_METER, sprite.getHeight() / 2 / Pong.PIXELS_PER_METER);
+        shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.density = 0.1f;
