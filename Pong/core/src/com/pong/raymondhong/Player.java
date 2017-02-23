@@ -48,7 +48,7 @@ public class Player extends Entity {
         shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.density = 0.1f;
+        fixture.density = 1000f;
         body.createFixture(fixture);
         shape.dispose();
     }

@@ -8,23 +8,30 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+
 /**
  * An Entity representing the AI Enemy Pong Board
  */
 public class Enemy extends Entity {
     private static final float enemySpeed = 5.0f;
-
+    private PongBall ball; //Used for tracking
     /**
      * Constructs an Enemy PongBoard
      */
-    public Enemy(World world) {
+    public Enemy(World world, PongBall ball) {
         super(new Sprite(new Texture("pongboard.jpg")));
         initializeBody(world);
+        this.ball = ball;
     }
 
     @Override
     public void act(float delta) {
-
+        if (ball.getX() > this.getX()) {
+            body.setLinearVelocity(enemySpeed, 0f);
+        }
+        else {
+            body.setLinearVelocity(-1.0f * enemySpeed, 0f);
+        }
     }
 
     /**
@@ -34,14 +41,14 @@ public class Enemy extends Entity {
     @Override
     public void initializeBody(World world) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, (Gdx.graphics.getHeight() - getHeight() / 2) / Pong.PIXELS_PER_METER);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.density = 0.1f;
+        fixture.density = 1000f;
         body.createFixture(fixture);
         shape.dispose();
     }

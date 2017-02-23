@@ -28,15 +28,15 @@ public class Pong extends ApplicationAdapter {
 	@Override
 	public void create () {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
-		bgm.play();
+		//bgm.play();
 
 		//Create the world and add gravity
 		world = new World(new Vector2(0, 0), true);
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
-		Enemy enemy = new Enemy(world);
 		PongBall ball = new PongBall(world);
+		Enemy enemy = new Enemy(world, ball);
 
 		stage = new Stage();
 		stage.addActor(player);
