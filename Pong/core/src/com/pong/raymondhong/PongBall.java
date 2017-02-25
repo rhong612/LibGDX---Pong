@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity that represents the Pong Ball
  */
 public class PongBall extends Entity {
-    private static final float ballSpeed = 20f;
+    private static final float ballSpeed = 15f;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body

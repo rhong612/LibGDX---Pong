@@ -57,7 +57,18 @@ public class Player extends Entity {
         bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
+        
+        float wOffset = getWidth() / 2 / Pong.PIXELS_PER_METER;
+        float hOffset = getHeight() / 2 / Pong.PIXELS_PER_METER;
+        Vector2[] vertices = new Vector2[6];
+        vertices[0] = new Vector2(0 - wOffset, getHeight() / 2 / Pong.PIXELS_PER_METER - hOffset);
+        vertices[1] = new Vector2(getWidth() / 10 / Pong.PIXELS_PER_METER - wOffset, getHeight() / Pong.PIXELS_PER_METER - hOffset);
+        vertices[2] = new Vector2((getWidth() * 9/10) / Pong.PIXELS_PER_METER - wOffset, getHeight() / Pong.PIXELS_PER_METER - hOffset);
+        vertices[3] = new Vector2(getWidth() / Pong.PIXELS_PER_METER - wOffset, getHeight() / 2 / Pong.PIXELS_PER_METER - hOffset);
+        vertices[4] = new Vector2(getWidth() / 10 / Pong.PIXELS_PER_METER - wOffset, 0 - hOffset);
+        vertices[5] = new Vector2((getWidth() * 9/10) / Pong.PIXELS_PER_METER - wOffset, 0 - hOffset);
+        shape.set(vertices);
+
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
         fixture.friction = 0f;
