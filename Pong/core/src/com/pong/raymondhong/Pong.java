@@ -28,7 +28,7 @@ public class Pong extends ApplicationAdapter {
 	@Override
 	public void create () {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
-		bgm.play();
+		//bgm.play();
 
 		//Create the world
 		world = new World(new Vector2(0, 0), true);

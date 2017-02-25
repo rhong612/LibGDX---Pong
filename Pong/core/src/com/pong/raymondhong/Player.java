@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity representing the Player Board
  */
 public class Player extends Entity {
-    private static final float playerSpeed = 15.0f;
+    private static final float playerSpeed = 0.2f;
 
     /**
      * Constructs a Player Board
@@ -27,10 +27,22 @@ public class Player extends Entity {
     @Override
     public void act(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            body.setLinearVelocity(-1.0f * playerSpeed, 0);
+            float newPos = body.getPosition().x - playerSpeed;
+            if (newPos * Pong.PIXELS_PER_METER - getWidth() / 2 <= 0) {
+                body.setTransform(getWidth() / 2 /Pong.PIXELS_PER_METER, body.getPosition().y, body.getAngle());
+            }
+            else {
+                body.setTransform(newPos, body.getPosition().y, body.getAngle());
+            }
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            body.setLinearVelocity(playerSpeed, 0);
+            float newPos = body.getPosition().x + playerSpeed;
+            if (newPos * Pong.PIXELS_PER_METER + getWidth() / 2 >= Gdx.graphics.getWidth()) {
+                body.setTransform((Gdx.graphics.getWidth() - getWidth() / 2) / Pong.PIXELS_PER_METER, body.getPosition().y, body.getAngle());
+            }
+            else {
+                body.setTransform(newPos, body.getPosition().y, body.getAngle());
+            }
         }
     }
 
