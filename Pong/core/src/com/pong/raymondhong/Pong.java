@@ -24,7 +24,9 @@ public class Pong extends ApplicationAdapter {
 	private World world;
 
 	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
-	private static final float speedUpFactor = 1.02f;
+	private static final float speedUpFactor = 1.01f;
+	private static final float speedThreshold = 7f;
+	private static final float fastSpeedUp = 1.3f;
 
 	//DEBUG TOOLS
 	private Box2DDebugRenderer debugger;
@@ -37,7 +39,6 @@ public class Pong extends ApplicationAdapter {
 
 		//Create the world
 		world = new World(new Vector2(0, 0), true);
-
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
@@ -89,11 +90,21 @@ public class Pong extends ApplicationAdapter {
 				Body b = contact.getFixtureB().getBody();
 
 				if ((a == playerBody && b == ballBody) || (a == ballBody && b == playerBody)) {
-					ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
+					if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
+						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * fastSpeedUp, ballBody.getLinearVelocity().y * fastSpeedUp);
+					}
+					else {
+						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
+					}
 				}
 				
 				else if ((a == enemyBody && b == ballBody) || (a == ballBody && b == enemyBody)) {
-					ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
+					if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
+						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * fastSpeedUp, ballBody.getLinearVelocity().y * fastSpeedUp);
+					}
+					else {
+						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
+					}
 				}
 			}
 

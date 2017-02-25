@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity that represents the Pong Ball
  */
 public class PongBall extends Entity {
-    private static final float ballSpeed = 20f;
+    private static final float initialBallSpeed = 5f;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body
@@ -27,16 +27,16 @@ public class PongBall extends Entity {
     private void applyRandomForceToBall() {
         double rand = Math.random();
         if (rand < 0.25) {
-            body.applyForceToCenter(new Vector2(ballSpeed, -1.0f * ballSpeed), true);
+            body.applyForceToCenter(new Vector2(initialBallSpeed, -1.0f * initialBallSpeed), true);
         }
         else if (rand < 0.5){
-            body.applyForceToCenter(new Vector2(ballSpeed, ballSpeed), true);
+            body.applyForceToCenter(new Vector2(initialBallSpeed, initialBallSpeed), true);
         }
         else if (rand < 0.75) {
-            body.applyForceToCenter(new Vector2(-1.0f * ballSpeed, ballSpeed), true);
+            body.applyForceToCenter(new Vector2(-1.0f * initialBallSpeed, initialBallSpeed), true);
         }
         else {
-            body.applyForceToCenter(new Vector2(-1.0f * ballSpeed, -1.0f * ballSpeed), true);
+            body.applyForceToCenter(new Vector2(-1.0f * initialBallSpeed, -1.0f * initialBallSpeed), true);
         }
     }
 
