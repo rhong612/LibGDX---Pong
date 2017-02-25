@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity representing the Player Board
  */
 public class Player extends Entity {
-    private static final float playerSpeed = 5.0f;
+    private static final float playerSpeed = 15.0f;
 
     /**
      * Constructs a Player Board
@@ -41,14 +41,14 @@ public class Player extends Entity {
     @Override
     public void initializeBody(World world) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         FixtureDef fixture = new FixtureDef();
         fixture.shape = shape;
-        fixture.density = 1000f;
+        fixture.friction = 0f;
         body.createFixture(fixture);
         shape.dispose();
     }

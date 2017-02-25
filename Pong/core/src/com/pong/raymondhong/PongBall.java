@@ -25,10 +25,10 @@ public class PongBall extends Entity {
 
         //Give the ball an initial force to get it moving
         if (Math.random() > 0.5) {
-            body.applyForceToCenter(new Vector2(0f, -1.0f * ballSpeed), true);
+            body.applyForceToCenter(new Vector2(ballSpeed, -1.0f * ballSpeed), true);
         }
         else {
-            body.applyForceToCenter(new Vector2(0f, ballSpeed), true);
+            body.applyForceToCenter(new Vector2(ballSpeed, ballSpeed), true);
         }
     }
 
@@ -63,6 +63,7 @@ public class PongBall extends Entity {
         fixture.shape = shape;
         fixture.density = 0.1f;
         fixture.restitution = 1f;
+        fixture.friction = 0f;
         body.createFixture(fixture);
         shape.dispose();
     }

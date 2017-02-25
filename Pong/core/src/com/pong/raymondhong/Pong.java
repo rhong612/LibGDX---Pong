@@ -28,10 +28,11 @@ public class Pong extends ApplicationAdapter {
 	@Override
 	public void create () {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
-		//bgm.play();
+		bgm.play();
 
-		//Create the world and add gravity
+		//Create the world
 		world = new World(new Vector2(0, 0), true);
+
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
@@ -54,6 +55,7 @@ public class Pong extends ApplicationAdapter {
 		leftShape.set(0f, 0f, 0f, Gdx.graphics.getHeight() / PIXELS_PER_METER);
 		FixtureDef leftFixture = new FixtureDef();
 		leftFixture.shape = leftShape;
+		leftFixture.friction = 0f;
 		leftWall.createFixture(leftFixture);
 		leftShape.dispose();
 
@@ -66,9 +68,9 @@ public class Pong extends ApplicationAdapter {
 		rightShape.set(Gdx.graphics.getWidth() / PIXELS_PER_METER, 0f, Gdx.graphics.getWidth() / PIXELS_PER_METER, Gdx.graphics.getHeight() / PIXELS_PER_METER);
 		FixtureDef rightFixture = new FixtureDef();
 		rightFixture.shape = rightShape;
+		rightFixture.friction = 0f;
 		rightWall.createFixture(rightFixture);
 		rightShape.dispose();
-
 
 		//Setup debugging tools
 		debugger = new Box2DDebugRenderer();
