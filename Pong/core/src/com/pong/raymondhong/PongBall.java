@@ -1,7 +1,6 @@
 package com.pong.raymondhong;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity that represents the Pong Ball
  */
 public class PongBall extends Entity {
-    private static final float ballSpeed = 15f;
+    private static final float ballSpeed = 20f;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body
@@ -22,8 +21,10 @@ public class PongBall extends Entity {
     public PongBall(World world) {
         super(new Sprite(new Texture("pongball.jpg")));
         initializeBody(world);
+        applyRandomForceToBall();
+    }
 
-        //Give the ball an initial force to get it moving
+    private void applyRandomForceToBall() {
         double rand = Math.random();
         if (rand < 0.25) {
             body.applyForceToCenter(new Vector2(ballSpeed, -1.0f * ballSpeed), true);
@@ -41,17 +42,10 @@ public class PongBall extends Entity {
 
     @Override
     public void act(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            body.setLinearVelocity(0f, ballSpeed);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            body.setLinearVelocity(-1.0f * ballSpeed, 0f);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            body.setLinearVelocity(0f, -1.0f * ballSpeed);
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            body.setLinearVelocity(ballSpeed, 0f);
+        if ((body.getPosition().y > Gdx.graphics.getHeight() / Pong.PIXELS_PER_METER) || (body.getPosition().y < 0)) {
+            body.setTransform(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, Gdx.graphics.getHeight() / 2 / Pong.PIXELS_PER_METER, body.getAngle());
+            body.setLinearVelocity(0f, 0f);
+            applyRandomForceToBall();
         }
     }
 

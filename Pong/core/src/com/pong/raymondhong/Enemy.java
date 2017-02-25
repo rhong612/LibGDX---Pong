@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * An Entity representing the AI Enemy Pong Board
  */
 public class Enemy extends Entity {
-    private static final float enemySpeed = 0.4f;
+    private static final float enemySpeed = 0.2f;
     private PongBall ball; //Used for tracking
     /**
      * Constructs an Enemy PongBoard

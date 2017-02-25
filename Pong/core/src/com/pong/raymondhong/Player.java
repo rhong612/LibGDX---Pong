@@ -57,7 +57,7 @@ public class Player extends Entity {
         bodyDef.position.set(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, getHeight() / 2 / Pong.PIXELS_PER_METER);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        
+
         float wOffset = getWidth() / 2 / Pong.PIXELS_PER_METER;
         float hOffset = getHeight() / 2 / Pong.PIXELS_PER_METER;
         Vector2[] vertices = new Vector2[6];
