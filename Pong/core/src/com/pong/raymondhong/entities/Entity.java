@@ -1,10 +1,11 @@
-package com.pong.raymondhong;
+package com.pong.raymondhong.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.pong.raymondhong.Pong;
 
 /**
  * An Entity in the game world that ensures the Box2D components are always in sync with the Scene components
@@ -30,6 +31,10 @@ public abstract class Entity extends Actor {
     public void draw(Batch batch, float alpha) {
         synchronize();
         sprite.draw(batch);
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.pong.raymondhong;
+package com.pong.raymondhong.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,11 +8,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.pong.raymondhong.Pong;
 
 /**
  * An Entity that represents the Pong Ball
  */
-public class PongBall extends Entity {
+public class PongBall extends com.pong.raymondhong.entities.Entity {
     private static final float initialBallSpeed = 5f;
 
     /*

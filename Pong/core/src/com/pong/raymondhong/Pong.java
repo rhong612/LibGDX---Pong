@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.pong.raymondhong.entities.*;
 
 public class Pong extends ApplicationAdapter {
 	private Music bgm;
@@ -36,6 +37,7 @@ public class Pong extends ApplicationAdapter {
 	public void create () {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
 		bgm.play();
+		bgm.setLooping(true);
 
 		//Create the world
 		world = new World(new Vector2(0, 0), true);
@@ -45,9 +47,9 @@ public class Pong extends ApplicationAdapter {
 		final PongBall ball = new PongBall(world);
 		Enemy enemy = new Enemy(world, ball);
 
-		final Body playerBody = player.body;
-		final Body ballBody = ball.body;
-		final Body enemyBody = enemy.body;
+		final Body playerBody = player.getBody();
+		final Body ballBody = ball.getBody();
+		final Body enemyBody = enemy.getBody();
 
 		stage = new Stage();
 		stage.addActor(player);
