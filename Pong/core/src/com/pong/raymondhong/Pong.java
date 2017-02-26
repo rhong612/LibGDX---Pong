@@ -27,7 +27,7 @@ public class Pong extends ApplicationAdapter {
 	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
 	private static final float speedUpFactor = 1.01f;
 	private static final float speedThreshold = 7f;
-	private static final float fastSpeedUp = 1.3f;
+	private static final float fastSpeedUp = 1.5f;
 
 	//DEBUG TOOLS
 	private Box2DDebugRenderer debugger;
@@ -68,6 +68,7 @@ public class Pong extends ApplicationAdapter {
 		FixtureDef leftFixture = new FixtureDef();
 		leftFixture.shape = leftShape;
 		leftFixture.friction = 0f;
+		leftFixture.restitution = 1f;
 		leftWall.createFixture(leftFixture);
 		leftShape.dispose();
 
@@ -81,6 +82,7 @@ public class Pong extends ApplicationAdapter {
 		FixtureDef rightFixture = new FixtureDef();
 		rightFixture.shape = rightShape;
 		rightFixture.friction = 0f;
+		rightFixture.restitution = 1f;
 		rightWall.createFixture(rightFixture);
 		rightShape.dispose();
 
