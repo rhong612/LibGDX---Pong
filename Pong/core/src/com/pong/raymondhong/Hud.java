@@ -20,6 +20,9 @@ public class Hud {
     private Label playerScoreLabel;
     private Label enemyScoreLabel;
 
+    /**
+     * Constructs a Hud with starting scores of 0
+     */
     public Hud() {
         playerScore = 0;
         enemyScore = 0;
@@ -46,16 +49,25 @@ public class Hud {
         stage.addActor(labelTable);
     }
 
+    /**
+     * Updates the scores and draws the Hud
+     */
     public void draw() {
         playerScoreLabel.setText(Integer.toString(playerScore));
         enemyScoreLabel.setText(Integer.toString(enemyScore));
         stage.draw();
     }
 
+    /**
+     * Increases player score by 1
+     */
     public void incrementPlayerScore() {
         playerScore++;
     }
 
+    /**
+     * Increases enemy score by 1
+     */
     public void incrementEnemyScore() {
         enemyScore++;
     }

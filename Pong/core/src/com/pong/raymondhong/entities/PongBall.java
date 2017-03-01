@@ -31,6 +31,9 @@ public class PongBall extends com.pong.raymondhong.entities.Entity {
         applyRandomForceToBall();
     }
 
+    /**
+     * Applies a random diagonal force to the ball
+     */
     private void applyRandomForceToBall() {
         double rand = Math.random();
         if (rand < 0.25) {
@@ -61,6 +64,9 @@ public class PongBall extends com.pong.raymondhong.entities.Entity {
         }
     }
 
+    /**
+     * Resets the ball position to the center and applies a random force to get it moving again
+     */
     private void resetBall() {
         body.setTransform(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, Gdx.graphics.getHeight() / 2 / Pong.PIXELS_PER_METER, body.getAngle());
         body.setLinearVelocity(0f, 0f);

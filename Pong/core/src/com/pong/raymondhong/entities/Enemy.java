@@ -15,7 +15,7 @@ import com.pong.raymondhong.Pong;
  * An Entity representing the AI Enemy Pong Board
  */
 public class Enemy extends Entity {
-    private static final float enemySpeed = 0.1f;
+    private static final float enemySpeed = 0.15f;
     private PongBall ball; //Used for tracking
     /**
      * Constructs an Enemy PongBoard

@@ -2,7 +2,6 @@ package com.pong.raymondhong;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -34,7 +33,7 @@ public class Pong extends ApplicationAdapter {
 
 	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
 	private static final float speedUpFactor = 1.01f;
-	private static final float speedThreshold = 5f;
+	private static final float speedThreshold = 7f;
 	private static final float fastSpeedUp = 1.5f;
 
 	//DEBUG TOOLS
@@ -138,6 +137,11 @@ public class Pong extends ApplicationAdapter {
 		debugCam.setToOrtho(false, Gdx.graphics.getWidth() / PIXELS_PER_METER, Gdx.graphics.getHeight() / PIXELS_PER_METER);
 	}
 
+	/**
+	 * Speeds up the ball if the ball collides with a paddle
+	 * @param a the first body of a collision
+	 * @param b the second body of a collision
+     */
 	private void checkSpeedOfBall(Body a, Body b) {
 		if ((a == playerBody && b == ballBody) || (a == enemyBody && b == ballBody)) {
 			if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
@@ -161,7 +165,7 @@ public class Pong extends ApplicationAdapter {
 		hud.draw();
 
 		//Open debugging view
-		debugger.render( world, debugCam.combined);
+		//debugger.render( world, debugCam.combined);
 	}
 	
 	@Override
