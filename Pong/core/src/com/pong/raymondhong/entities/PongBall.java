@@ -1,6 +1,7 @@
 package com.pong.raymondhong.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -17,13 +18,15 @@ import com.pong.raymondhong.Pong;
 public class PongBall extends com.pong.raymondhong.entities.Entity {
     private static final float initialBallSpeed = 5f;
     private Hud hud;
+    private Sound missSound;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body
      */
-    public PongBall(World world, Hud hud) {
+    public PongBall(World world, Hud hud, Sound missSound) {
         super(new Sprite(new Texture("pongball.jpg")));
         this.hud = hud;
+        this.missSound = missSound;
         initializeBody(world);
         applyRandomForceToBall();
     }
@@ -48,10 +51,12 @@ public class PongBall extends com.pong.raymondhong.entities.Entity {
     public void act(float delta) {
         if ((body.getPosition().y > Gdx.graphics.getHeight() / Pong.PIXELS_PER_METER)) {
             hud.incrementPlayerScore();
+            missSound.play();
             resetBall();
         }
         else if (body.getPosition().y < 0)  {
             hud.incrementEnemyScore();
+            missSound.play();
             resetBall();
         }
     }

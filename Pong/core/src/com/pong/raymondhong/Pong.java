@@ -21,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.pong.raymondhong.entities.*;
 
 public class Pong extends ApplicationAdapter {
-	private Music bgm;
 	private Sound hitPaddleSound;
 	private Sound hitWallSound;
 	private Sound missSound;
@@ -45,9 +44,6 @@ public class Pong extends ApplicationAdapter {
 	@Override
 	public void create () {
 
-		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
-		bgm.play();
-		bgm.setLooping(true);
 		hitPaddleSound = Gdx.audio.newSound(Gdx.files.internal("pong_paddle.wav"));
 		hitWallSound = Gdx.audio.newSound(Gdx.files.internal("pong_wall.wav"));
 		missSound = Gdx.audio.newSound(Gdx.files.internal("pong_miss.wav"));
@@ -58,7 +54,7 @@ public class Pong extends ApplicationAdapter {
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
-		final PongBall ball = new PongBall(world, hud);
+		PongBall ball = new PongBall(world, hud, missSound);
 		Enemy enemy = new Enemy(world, ball);
 
 		playerBody = player.getBody();
@@ -108,6 +104,15 @@ public class Pong extends ApplicationAdapter {
 				Body b = contact.getFixtureB().getBody();
 				checkSpeedOfBall(a, b);
 				checkSpeedOfBall(b, a);
+
+				//If contact is between ball and wall
+				if ((a == ballBody && (b == leftWall || b == rightWall)) || ((a == leftWall || a == rightWall) && b == ballBody)) {
+					hitWallSound.play();
+				}
+				//If contact is between ball and paddle
+				else if ((a == ballBody && (b == playerBody || b == enemyBody)) || ((a == playerBody || a == enemyBody) && b == ballBody)) {
+					hitPaddleSound.play();
+				}
 			}
 
 			@Override
@@ -161,7 +166,9 @@ public class Pong extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		stage.dispose();
-		bgm.dispose();
 		world.dispose();
+		hitPaddleSound.dispose();
+		hitWallSound.dispose();
+		missSound.dispose();
 	}
 }
