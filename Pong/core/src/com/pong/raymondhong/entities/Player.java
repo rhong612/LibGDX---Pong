@@ -107,7 +107,17 @@ public class Player extends Entity implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        float newPos = screenX;
+        if (newPos + getWidth() / 2 >= Gdx.graphics.getWidth()) {
+            body.setTransform((Gdx.graphics.getWidth() - getWidth() / 2) / Pong.PIXELS_PER_METER, body.getPosition().y, body.getAngle());
+        }
+        else if (newPos - getWidth() / 2 <= 0) {
+            body.setTransform(getWidth() / 2 /Pong.PIXELS_PER_METER, body.getPosition().y, body.getAngle());
+        }
+        else {
+            body.setTransform(newPos / Pong.PIXELS_PER_METER, body.getPosition().y, body.getAngle());
+        }
+        return true;
     }
 
     @Override
