@@ -43,7 +43,8 @@ public class Pong extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-
+		Gdx.graphics.setResizable(false);
+		
 		hitPaddleSound = Gdx.audio.newSound(Gdx.files.internal("pong_paddle.wav"));
 		hitWallSound = Gdx.audio.newSound(Gdx.files.internal("pong_wall.wav"));
 		missSound = Gdx.audio.newSound(Gdx.files.internal("pong_miss.wav"));
