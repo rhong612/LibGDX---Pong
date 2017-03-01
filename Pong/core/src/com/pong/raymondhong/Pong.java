@@ -3,6 +3,7 @@ package com.pong.raymondhong;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -21,8 +22,16 @@ import com.pong.raymondhong.entities.*;
 
 public class Pong extends ApplicationAdapter {
 	private Music bgm;
+	private Sound hitPaddleSound;
+	private Sound hitWallSound;
+	private Sound missSound;
 	private Stage stage;
 	private World world;
+	private Hud hud;
+
+	private Body playerBody;
+	private Body enemyBody;
+	private Body ballBody;
 
 	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
 	private static final float speedUpFactor = 1.01f;
@@ -35,21 +44,26 @@ public class Pong extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("BGM.ogg"));
 		bgm.play();
 		bgm.setLooping(true);
+		hitPaddleSound = Gdx.audio.newSound(Gdx.files.internal("pong_paddle.wav"));
+		hitWallSound = Gdx.audio.newSound(Gdx.files.internal("pong_wall.wav"));
+		missSound = Gdx.audio.newSound(Gdx.files.internal("pong_miss.wav"));
 
 		//Create the world
 		world = new World(new Vector2(0, 0), true);
+		hud = new Hud();
 
 		//Initialize all actors and add them to the stage
 		Player player = new Player(world);
-		final PongBall ball = new PongBall(world);
+		final PongBall ball = new PongBall(world, hud);
 		Enemy enemy = new Enemy(world, ball);
 
-		final Body playerBody = player.getBody();
-		final Body ballBody = ball.getBody();
-		final Body enemyBody = enemy.getBody();
+		playerBody = player.getBody();
+		ballBody = ball.getBody();
+		enemyBody = enemy.getBody();
 
 		stage = new Stage();
 		stage.addActor(player);
@@ -92,24 +106,8 @@ public class Pong extends ApplicationAdapter {
 			public void beginContact(Contact contact) {
 				Body a = contact.getFixtureA().getBody();
 				Body b = contact.getFixtureB().getBody();
-
-				if ((a == playerBody && b == ballBody) || (a == ballBody && b == playerBody)) {
-					if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
-						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * fastSpeedUp, ballBody.getLinearVelocity().y * fastSpeedUp);
-					}
-					else {
-						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
-					}
-				}
-				
-				else if ((a == enemyBody && b == ballBody) || (a == ballBody && b == enemyBody)) {
-					if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
-						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * fastSpeedUp, ballBody.getLinearVelocity().y * fastSpeedUp);
-					}
-					else {
-						ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
-					}
-				}
+				checkSpeedOfBall(a, b);
+				checkSpeedOfBall(b, a);
 			}
 
 			@Override
@@ -134,6 +132,17 @@ public class Pong extends ApplicationAdapter {
 		debugCam.setToOrtho(false, Gdx.graphics.getWidth() / PIXELS_PER_METER, Gdx.graphics.getHeight() / PIXELS_PER_METER);
 	}
 
+	private void checkSpeedOfBall(Body a, Body b) {
+		if ((a == playerBody && b == ballBody) || (a == enemyBody && b == ballBody)) {
+			if (Math.abs(ballBody.getLinearVelocity().y) < speedThreshold) {
+				ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * fastSpeedUp, ballBody.getLinearVelocity().y * fastSpeedUp);
+			}
+			else {
+				ballBody.setLinearVelocity(ballBody.getLinearVelocity().x * speedUpFactor, ballBody.getLinearVelocity().y * speedUpFactor);
+			}
+		}
+	}
+
 	@Override
 	public void render () {
 		world.step(1f/60f, 6, 2); //Run physics simulation at a rate of 60Hz
@@ -143,6 +152,7 @@ public class Pong extends ApplicationAdapter {
 
 		stage.act();
 		stage.draw();
+		hud.draw();
 
 		//Open debugging view
 		debugger.render( world, debugCam.combined);

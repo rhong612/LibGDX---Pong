@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.pong.raymondhong.Hud;
 import com.pong.raymondhong.Pong;
 
 /**
@@ -15,12 +16,14 @@ import com.pong.raymondhong.Pong;
  */
 public class PongBall extends com.pong.raymondhong.entities.Entity {
     private static final float initialBallSpeed = 5f;
+    private Hud hud;
 
     /*
     Constructs a PongBall without a Body - most functions will fail without a Body
      */
-    public PongBall(World world) {
+    public PongBall(World world, Hud hud) {
         super(new Sprite(new Texture("pongball.jpg")));
+        this.hud = hud;
         initializeBody(world);
         applyRandomForceToBall();
     }
@@ -43,11 +46,20 @@ public class PongBall extends com.pong.raymondhong.entities.Entity {
 
     @Override
     public void act(float delta) {
-        if ((body.getPosition().y > Gdx.graphics.getHeight() / Pong.PIXELS_PER_METER) || (body.getPosition().y < 0)) {
-            body.setTransform(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, Gdx.graphics.getHeight() / 2 / Pong.PIXELS_PER_METER, body.getAngle());
-            body.setLinearVelocity(0f, 0f);
-            applyRandomForceToBall();
+        if ((body.getPosition().y > Gdx.graphics.getHeight() / Pong.PIXELS_PER_METER)) {
+            hud.incrementPlayerScore();
+            resetBall();
         }
+        else if (body.getPosition().y < 0)  {
+            hud.incrementEnemyScore();
+            resetBall();
+        }
+    }
+
+    private void resetBall() {
+        body.setTransform(Gdx.graphics.getWidth() / 2 / Pong.PIXELS_PER_METER, Gdx.graphics.getHeight() / 2 / Pong.PIXELS_PER_METER, body.getAngle());
+        body.setLinearVelocity(0f, 0f);
+        applyRandomForceToBall();
     }
 
     /**
