@@ -34,7 +34,7 @@ public class Pong extends ApplicationAdapter {
 
 	public static final float PIXELS_PER_METER = 50f; //Every 50 pixels = 1 meter in game
 	private static final float speedUpFactor = 1.01f;
-	private static final float speedThreshold = 7f;
+	private static final float speedThreshold = 5f;
 	private static final float fastSpeedUp = 1.5f;
 
 	//DEBUG TOOLS

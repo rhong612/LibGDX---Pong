@@ -16,7 +16,7 @@ import com.pong.raymondhong.Pong;
  * An Entity that represents the Pong Ball
  */
 public class PongBall extends com.pong.raymondhong.entities.Entity {
-    private static final float initialBallSpeed = 5f;
+    private static final float initialBallSpeed = 2f;
     private Hud hud;
     private Sound missSound;
 
